@@ -31,17 +31,18 @@ get_cran_sysreqs <- function(package, platform = current_platform()) {
 #' @importFrom desc description
 
 sysreqs <- function(desc, platform = current_platform(), soft = TRUE) {
-  dsc <- description$new(desc)
-
-  sysreqs_field <- dsc$get("SystemRequirements")
-  own_sysreqs <- if (is.na(sysreqs_field)) {
-    character()
-  } else {
-    get_sysreqs(sysreqs_field, platform = platform)
-  }
-
-  deps <- dsc$get_deps()
-
+    dsc <- description$new(desc)
+    sysreqs_field <- dsc$get("SystemRequirements")
+    
+    own_sysreqs <- if (is.na(sysreqs_field)) {
+                       character()
+                   } else {
+                       ## Fails here
+                       get_sysreqs(sysreqs_field, platform = platform)
+                   }
+    
+    deps <- dsc$get_deps()
+  
   ## Remove soft dependencies if they are not wanted
   if (!soft) {
     deps <- deps[ deps$type %in% c("Depends", "Imports", "LinkingTo"),, drop = FALSE ]
